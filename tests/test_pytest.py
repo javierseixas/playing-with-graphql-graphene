@@ -1,9 +1,11 @@
 import os
 import tempfile
+import json
 
 import pytest
 
 from app import app
+from pyjsonassert import assert_json
 
 
 @pytest.fixture
@@ -19,7 +21,7 @@ def client():
 
 
 def test_empty_db(client):
-    """Start with a blank database."""
 
     rv = client.get('/graphql')
-    assert b'No entries here so far' in rv.data
+    response_body = json.loads(rv.data.decode('ascii'))
+    assert_json("{\"hello\": \"World\"}", response_body)

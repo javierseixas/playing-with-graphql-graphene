@@ -1,3 +1,4 @@
 graphene
 Flask
 pytest
+pyJsonAssert

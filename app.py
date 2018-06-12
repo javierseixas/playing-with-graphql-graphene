@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, Response
 import graphene, json
 
 
@@ -50,8 +50,8 @@ def hello_world():
     }
   }
 ''')
-
-    return json.dumps(result.data, indent=4)
+    
+    return Response(json.dumps(result.data, indent=4), mimetype='application/json')
 
 
 if __name__ == '__main__':
