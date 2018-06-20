@@ -1,5 +1,7 @@
+import graphene
+import json
+import http.client
 from flask import Flask, Response
-import graphene, json
 
 
 class Section(graphene.ObjectType):
@@ -25,7 +27,10 @@ class Query(graphene.ObjectType):
     guides = graphene.List(lambda: Guide)
 
     def resolve_hello(self, info):
-        return 'World'
+        connection = http.client.HTTPSConnection("yipit.com")
+        connection.request("GET", "/")
+        response = connection.getresponse()
+        return response.read().decode("utf-8")
 
     def resolve_guides(self, info):
         return [Guide()]

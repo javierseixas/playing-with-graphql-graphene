@@ -2,3 +2,4 @@ graphene
 Flask
 pytest
 pyJsonAssert
+httpretty
