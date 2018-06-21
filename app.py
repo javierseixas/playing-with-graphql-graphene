@@ -4,11 +4,22 @@ import http.client
 from flask import Flask, Response
 
 
-class Section(graphene.ObjectType):
-    text = graphene.String()
+class Article(graphene.ObjectType):
+    content = graphene.String()
 
-    def resolve_text(self, info):
-        return self.text
+    def resolve_content(self, info):
+        return "hello I'm content"
+
+
+class Section(graphene.ObjectType):
+    name = graphene.String()
+    article = graphene.Field(Article)
+
+    # def resolve_name(self, info):
+    #     return "Seccion"
+
+    def resolve_article(self, info):
+        return Article(content="This is content")
 
 
 class Guide(graphene.ObjectType):
@@ -19,7 +30,7 @@ class Guide(graphene.ObjectType):
         return 'Guide'
 
     def resolve_sections(self, info):
-        return [Section(text='uno'), Section(text='dos')]
+        return [Section(name='uno'), Section(name='dos')]
 
 
 class Query(graphene.ObjectType):
@@ -27,10 +38,11 @@ class Query(graphene.ObjectType):
     guides = graphene.List(lambda: Guide)
 
     def resolve_hello(self, info):
-        connection = http.client.HTTPSConnection("yipit.com")
-        connection.request("GET", "/")
-        response = connection.getresponse()
-        return response.read().decode("utf-8")
+        # connection = http.client.HTTPSConnection("yipit.com")
+        # connection.request("GET", "/")
+        # response = connection.getresponse()
+        # return response.read().decode("utf-8")
+        return "World"
 
     def resolve_guides(self, info):
         return [Guide()]
@@ -50,7 +62,10 @@ def hello_world():
     guides {
       name
       sections {
-        text
+        name
+        article {
+          content
+        }
       }
     }
   }
